@@ -11,4 +11,9 @@ public interface UserService {
     UserResponseDto getUserById(int id);
     String loginUser(String email, String password);
     LoginResponseDto getUserByName(String name);
+
+
+    // for admin only
+    UserResponseDto registerAdmin(UserRequestDto userDto);
+    String loginAdmin(String email, String password);
 }

@@ -12,6 +12,7 @@ public class UserRequestDto {
     private String name;
 
     @Email(message = "Invalid email format")
+    @NotBlank(message="Email is required")
     @Column(unique = true)
     private String email;
 

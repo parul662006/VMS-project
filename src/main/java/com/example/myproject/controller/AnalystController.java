@@ -1,13 +1,12 @@
 package com.example.myproject.controller;
 
-import com.example.myproject.model.LoginRequestDto;
-import com.example.myproject.model.LoginResponseDto;
-import com.example.myproject.model.UserRequestDto;
-import com.example.myproject.model.UserResponseDto;
+import com.example.myproject.model.*;
+import com.example.myproject.service.CveService;
 import com.example.myproject.service.UserService;
 import com.example.myproject.service.impl.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +17,8 @@ public class AnalystController {
 
     @Autowired
     private AdminService adminService;
+
+
 
     // post user data
     @PostMapping("/post-user-data")
@@ -34,11 +35,7 @@ public class AnalystController {
         return ResponseEntity.ok(user);
     }
 
-    //login user
-    @PostMapping("/user-data")
-    public String data(@RequestBody LoginRequestDto dto){
-       return  userService.loginUser(dto.getEmail(), dto.getPassword());
-    }
+
     @GetMapping("/user/name/{name}")
     public ResponseEntity<LoginResponseDto> getUserByname(@PathVariable String name) {
         LoginResponseDto user = userService.getUserByName(name);
@@ -52,11 +49,12 @@ public class AnalystController {
         return ResponseEntity.ok(dto);
     }
 
-    //login Admin
-    @PostMapping("/admin-data")
-    public String adminData(@RequestBody LoginRequestDto dto){
+    //login Admin and user
+    @PostMapping("/login-page")
+    public String adminData(@Valid @RequestBody LoginRequestDto dto){
         return  userService.loginUser(dto.getEmail(), dto.getPassword());
     }
+
 
 
 }

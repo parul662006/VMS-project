@@ -84,6 +84,60 @@ public class UserImplementation implements UserService {
     }
 
 
+    //REGISTER ONLY FOR ADMINS HERE
+    @Override
+    public UserResponseDto registerAdmin(UserRequestDto userRequestDto){
+
+        //check password first before email
+        UtilProgram.matchPassword(userRequestDto.getPassword(),userRequestDto.getConfirm_password());
+
+
+        // Step 1: Check if email already exists
+        String email = userRequestDto.getEmail().toLowerCase();//converting email in lower case
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
+        }
+
+        //  Set lowercase email back to DTO
+        userRequestDto.setEmail(email);
+
+        //convert dto -> entity
+        Analyst analyst=modelMapper.map(userRequestDto, Analyst.class);
+
+        //set role
+        analyst.setRole(EnumProgram.Role.ADMIN);
+
+        //save user in db
+        Analyst saveUser=userRepository.save(analyst);
+
+        //convert entity -> response dto
+        return modelMapper.map(saveUser, UserResponseDto.class);
+
+    }
+    //check login email and password entered by admin
+    @Override
+    public String loginAdmin(String email, String password){
+        Analyst analyst=userRepository.findByEmail(email)
+                .orElseThrow(()->new UserNotFoundException("user not found with this email :"+email));
+
+        //check password
+        UtilProgram.checkPassword(password,analyst.getPassword());
+
+        //check name which user entered
+        //UtilProgram.validateNameMatch(name, analyst.getName());
+        LoginResponseDto loginResponseDto=new LoginResponseDto();
+        loginResponseDto.setName(analyst.getName());
+
+
+        //return to response dto
+        // LoginResponseDto ll=  modelMapper.map(analyst, LoginResponseDto.class);
+
+        //return success mesaage
+        return "Hi! "+loginResponseDto.getName()+" "+analyst.getRole()+" login successfully with your email"+" "+analyst.getEmail();
+    }
+
+
+
 
 
 }

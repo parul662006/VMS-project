@@ -12,7 +12,7 @@ public class UtilProgram {
 
     public static void matchPassword(String password,String confirmPassword) {
         if (!password.equals(confirmPassword)) {
-            throw new InvalidPasswordException("password doesn't matched");
+            throw new InvalidPasswordException("password doesn't match");
         }
     }
 
