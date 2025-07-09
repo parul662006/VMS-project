@@ -1,12 +1,12 @@
 package com.example.myproject.controller;
 
-import com.example.myproject.model.*;
-import com.example.myproject.service.CveService;
+import com.example.myproject.dto.LoginRequestDto;
+import com.example.myproject.dto.LoginResponseDto;
+import com.example.myproject.dto.UserRequestDto;
+import com.example.myproject.dto.UserResponseDto;
 import com.example.myproject.service.UserService;
-import com.example.myproject.service.impl.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class AnalystController {
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AdminService adminService;
-
 
 
     // post user data
@@ -45,7 +41,7 @@ public class AnalystController {
     //POST ADMIN DATA
     @PostMapping("/post-admin-data")
     public ResponseEntity<?> postAdminData(@Valid @RequestBody UserRequestDto userDto){
-        UserResponseDto dto= adminService.registerAdmin(userDto);
+        UserResponseDto dto= userService.registerAdmin(userDto);
         return ResponseEntity.ok(dto);
     }
 

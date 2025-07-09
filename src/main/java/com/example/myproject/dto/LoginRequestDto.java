@@ -1,4 +1,4 @@
-package com.example.myproject.model;
+package com.example.myproject.dto;
 
 
 import jakarta.validation.constraints.NotBlank;

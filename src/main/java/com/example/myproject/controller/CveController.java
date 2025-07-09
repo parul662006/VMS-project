@@ -1,7 +1,7 @@
 package com.example.myproject.controller;
 
-import com.example.myproject.model.CveRequestDto;
-import com.example.myproject.model.CveResponseDto;
+import com.example.myproject.dto.CveRequestDto;
+import com.example.myproject.dto.CveResponseDto;
 import com.example.myproject.service.CveService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class CveController {
     @Autowired
     private CveService cveService;

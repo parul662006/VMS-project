@@ -1,8 +1,10 @@
 package com.example.myproject.model;
 
+import com.example.myproject.converter.VersionConverter;
 import com.example.myproject.enumCode.CveStatus;
 import com.example.myproject.enumCode.SeverityLevel;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
@@ -35,9 +37,10 @@ public class Cve {
     @NotBlank(message = "package is required")
     private String cve_package;
 
-    @NotBlank(message = "version is required")
-    private String cve_version_start;
-    private String cve_version_end;
+   //
+    @Convert(converter= VersionConverter.class)
+    @Column(columnDefinition = "JSON", nullable = false)
+    private Versions versions;
 
     @NotBlank(message = "Description is required")
     private String cve_description;
@@ -93,20 +96,12 @@ public class Cve {
         this.cve_package = cve_package;
     }
 
-    public String getCve_version_start() {
-        return cve_version_start;
+    public Versions getVersions() {
+        return versions;
     }
 
-    public void setCve_version_start(String cve_version_start) {
-        this.cve_version_start = cve_version_start;
-    }
-
-    public String getCve_version_end() {
-        return cve_version_end;
-    }
-
-    public void setCve_version_end(String cve_version_end) {
-        this.cve_version_end = cve_version_end;
+    public void setVersions(Versions versions) {
+        this.versions = versions;
     }
 
     public String getCve_description() {

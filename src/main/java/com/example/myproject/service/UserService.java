@@ -1,8 +1,8 @@
 package com.example.myproject.service;
 
-import com.example.myproject.model.LoginResponseDto;
-import com.example.myproject.model.UserRequestDto;
-import com.example.myproject.model.UserResponseDto;
+import com.example.myproject.dto.LoginResponseDto;
+import com.example.myproject.dto.UserRequestDto;
+import com.example.myproject.dto.UserResponseDto;
 
 public interface UserService {
 
