@@ -3,6 +3,8 @@ package com.example.myproject.model;
 import com.example.myproject.converter.VersionConverter;
 import com.example.myproject.enumCode.CveStatus;
 import com.example.myproject.enumCode.SeverityLevel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -37,7 +39,7 @@ public class Cve {
     @NotBlank(message = "package is required")
     private String cve_package;
 
-   //
+
     @Convert(converter= VersionConverter.class)
     @Column(columnDefinition = "JSON", nullable = false)
     private Versions versions;
@@ -55,6 +57,7 @@ public class Cve {
     public void setCve_id(String cve_id) {
         this.cveId = cve_id;
     }
+
 
     public int getId() {
         return id;

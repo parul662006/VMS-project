@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,6 +29,7 @@ public class CveImplementation implements CveService {
         Cve cve=modelMapper.map(cveRequestDto, Cve.class);
         System.out.println("DTO Versions = " + cveRequestDto.getVersions());
 
+
         //generate cve-id then set
         String uuid= UUID.randomUUID().toString();
         cve.setCve_id(uuid);
@@ -40,10 +43,23 @@ public class CveImplementation implements CveService {
             cve.setSeverity(SeverityLevel.Severity_level.MEDIUM);
         }
 
-     Cve org_cve=   cveRepository.save(cve);
+        //save
+      Cve org_cve=   cveRepository.save(cve);
+        //map to responseDto
       return  modelMapper.map(org_cve, CveResponseDto.class);
 
 
+    }
+
+    //get all cve-data
+    public List<CveResponseDto> getAllCveData(){
+    List<Cve> cve=cveRepository.findAll();
+    List<CveResponseDto> list=new ArrayList<>();
+    for(Cve c:cve){
+        CveResponseDto cveResponseDto=modelMapper.map(c, CveResponseDto.class);
+        list.add(cveResponseDto);
+    }
+        return list;
     }
 
 

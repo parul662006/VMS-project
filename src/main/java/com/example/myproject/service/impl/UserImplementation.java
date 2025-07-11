@@ -14,6 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserImplementation implements UserService {
 
@@ -58,24 +61,18 @@ public class UserImplementation implements UserService {
 
     //check login email and password entered by user
     @Override
-    public String loginUser(String email, String password){
+    public LoginResponseDto loginUser(String email, String password){
         Analyst analyst=userRepository.findByEmail(email)
                 .orElseThrow(()->new UserNotFoundException("user not found with this email :"+email));
 
         //check password
         UtilProgram.checkPassword(password,analyst.getPassword());
 
-        //check name which user entered
-        //UtilProgram.validateNameMatch(name, analyst.getName());
-        LoginResponseDto loginResponseDto=new LoginResponseDto();
-        loginResponseDto.setName(analyst.getName());
 
+//        return to response dto
+        LoginResponseDto ll=  modelMapper.map(analyst, LoginResponseDto.class);
 
-        //return to response dto
-       // LoginResponseDto ll=  modelMapper.map(analyst, LoginResponseDto.class);
-
-        //return success mesaage
-        return "Hi! "+loginResponseDto.getName()+" "+analyst.getRole()+" login successfully with your email"+" "+analyst.getEmail();
+        return ll;
     }
 
     //getting user data by name
@@ -117,30 +114,15 @@ public class UserImplementation implements UserService {
         return modelMapper.map(saveUser, UserResponseDto.class);
 
     }
-    //check login email and password entered by admin
+
     @Override
-    public String loginAdmin(String email, String password){
-        Analyst analyst=userRepository.findByEmail(email)
-                .orElseThrow(()->new UserNotFoundException("user not found with this email :"+email));
-
-        //check password
-        UtilProgram.checkPassword(password,analyst.getPassword());
-
-        //check name which user entered
-        //UtilProgram.validateNameMatch(name, analyst.getName());
-        LoginResponseDto loginResponseDto=new LoginResponseDto();
-        loginResponseDto.setName(analyst.getName());
-
-
-        //return to response dto
-        // LoginResponseDto ll=  modelMapper.map(analyst, LoginResponseDto.class);
-
-        //return success mesaage
-        return "Hi! "+loginResponseDto.getName()+" "+analyst.getRole()+" login successfully with your email"+" "+analyst.getEmail();
+    public List<LoginResponseDto> getAllData(){
+        List<Analyst> analyst=userRepository.findAll();
+        List<LoginResponseDto> loginResponseDtoList=new ArrayList<>();
+        for(Analyst a:analyst){
+            LoginResponseDto loginResponseDto= modelMapper.map(a, LoginResponseDto.class);
+            loginResponseDtoList.add(loginResponseDto);
+        }
+        return loginResponseDtoList;
     }
-
-
-
-
-
 }

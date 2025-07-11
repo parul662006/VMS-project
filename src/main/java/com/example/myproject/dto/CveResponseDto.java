@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
         private int id;
         private String cveId;
 
+
         private String cve_description;
 
         private Versions versions;

@@ -1,14 +1,11 @@
 package com.example.myproject.dto;
 
-import com.example.myproject.enumCode.CveStatus;
-import com.example.myproject.enumCode.SeverityLevel;
+
 import com.example.myproject.model.Versions;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Data
 @Getter
