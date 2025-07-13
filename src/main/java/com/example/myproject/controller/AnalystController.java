@@ -65,9 +65,18 @@ public class AnalystController {
     // delete users by their id
     @DeleteMapping("delete-data-by-id/{id}")
     public ResponseEntity<String> deleteData(@PathVariable int id){
+        userService.deleteDataById(id);
         return ResponseEntity.ok("data delected successfully of id : "+id);
     }
 
+    //Delete all
+    @DeleteMapping("delete-all-user-data")
+    public ResponseEntity<String> deleteAll(UserRequestDto userRequestDto){
+        userService.deleteAllData(userRequestDto);
+        return ResponseEntity.ok("all data deleted successfully");
+    }
+
+    // get all
     @GetMapping("get-All-users-data")
     public ResponseEntity<List<LoginResponseDto>> getAllData(){
         return ResponseEntity.ok(userService.getAllData());

@@ -78,6 +78,23 @@ public class CveController {
     }
 
 
+    //delete by id
+    @DeleteMapping("delete-cve-data/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id){
+        cveService.deleteDataById(id);
+        return ResponseEntity.ok("data deleted successfully of id : "+id);
+    }
+
+    //delete all
+    @DeleteMapping("delete-all-cve-data")
+    public ResponseEntity<String> deleteAllData(CveRequestDto cveRequestDto){
+        cveService.deleteAllData(cveRequestDto);
+        return ResponseEntity.ok("all data deleted successfully");
+    }
+    
+
+
+
 
 
 }

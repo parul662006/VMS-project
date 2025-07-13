@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -60,6 +61,21 @@ public class CveImplementation implements CveService {
         list.add(cveResponseDto);
     }
         return list;
+    }
+
+
+    //delete cve data by id
+    @Override
+    public void deleteDataById(int id){
+        Cve cve=cveRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("not found data with this id"+id));
+        cveRepository.delete(cve);
+
+    }
+
+    @Override
+    public void deleteAllData(CveRequestDto cveRequestDto){
+        cveRepository.deleteAll();
     }
 
 

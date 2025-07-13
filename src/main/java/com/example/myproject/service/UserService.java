@@ -13,7 +13,10 @@ public interface UserService {
     UserResponseDto createUser(UserRequestDto userDto);
     UserResponseDto getUserById(int id);
     LoginResponseDto loginUser(String email, String password);
-    LoginResponseDto getUserByName(String name);
+
+
+    //delete by id
+    void deleteDataById(int id);
 
 
     // for admin only
@@ -21,4 +24,7 @@ public interface UserService {
 
     //get all data
     List<LoginResponseDto> getAllData();
+
+    //delete all
+    void deleteAllData(UserRequestDto userRequestDto);
 }

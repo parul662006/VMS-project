@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CveRepository extends JpaRepository<Cve,Integer> {
 
-    Optional<Cve> findById(int id);
+
 }

@@ -75,14 +75,6 @@ public class UserImplementation implements UserService {
         return ll;
     }
 
-    //getting user data by name
-    @Override
-    public LoginResponseDto getUserByName(String name){
-        Analyst analyst=userRepository.findByName(name)
-                .orElseThrow(()->new RuntimeException("User not found with this name"+" "+name));
-        return modelMapper.map(analyst, LoginResponseDto.class);
-    }
-
 
     //REGISTER ONLY FOR ADMINS HERE
     @Override
@@ -124,5 +116,18 @@ public class UserImplementation implements UserService {
             loginResponseDtoList.add(loginResponseDto);
         }
         return loginResponseDtoList;
+    }
+
+    @Override
+    public void deleteDataById(int id){
+        Analyst analyst=userRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("data not found of id : "+id));
+        userRepository.delete(analyst);
+    }
+
+    @Override
+    public void deleteAllData(UserRequestDto userRequestDto){
+        List<Analyst> analyst=userRepository.findAll();
+        userRepository.deleteAll(analyst);
     }
 }
