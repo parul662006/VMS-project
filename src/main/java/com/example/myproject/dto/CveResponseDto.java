@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
         private String cveId;
 
 
-        private String cve_description;
+        private String cveDescription;
 
         private Versions versions;
 
         private SeverityLevel.Severity_level severity;
-        private CveStatus.cve_status status;
+        private CveStatus.cveStatus status;
         private LocalDateTime created_at;
 
         public int getId() {
@@ -38,12 +38,12 @@ import java.time.LocalDateTime;
             this.cveId = cveId;
         }
 
-        public String getCve_description() {
-            return cve_description;
+        public String getCveDescription() {
+            return cveDescription;
         }
 
-        public void setCve_description(String cve_description) {
-            this.cve_description = cve_description;
+        public void setCveDescription(String cveDescription) {
+            this.cveDescription = cveDescription;
         }
 
         public Versions getVersions() {
@@ -62,11 +62,12 @@ import java.time.LocalDateTime;
             this.severity = severity;
         }
 
-        public CveStatus.cve_status getStatus() {
+
+        public CveStatus.cveStatus getStatus() {
             return status;
         }
 
-        public void setStatus(CveStatus.cve_status status) {
+        public void setStatus(CveStatus.cveStatus status) {
             this.status = status;
         }
 

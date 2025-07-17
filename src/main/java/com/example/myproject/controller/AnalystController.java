@@ -4,6 +4,8 @@ import com.example.myproject.dto.LoginRequestDto;
 import com.example.myproject.dto.LoginResponseDto;
 import com.example.myproject.dto.UserRequestDto;
 import com.example.myproject.dto.UserResponseDto;
+import com.example.myproject.model.Analyst;
+import com.example.myproject.repository.UserRepository;
 import com.example.myproject.response.APIResponse;
 import com.example.myproject.service.UserService;
 import jakarta.validation.Valid;
@@ -22,6 +24,9 @@ public class AnalystController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
 
@@ -80,6 +85,28 @@ public class AnalystController {
     @GetMapping("get-All-users-data")
     public ResponseEntity<List<LoginResponseDto>> getAllData(){
         return ResponseEntity.ok(userService.getAllData());
+    }
+
+    //data update by patch
+    @PatchMapping("user/update/{id}")
+    public ResponseEntity<APIResponse<Analyst>> updateUserDataPartially(@PathVariable int id,@RequestBody Analyst updatedUser){
+        Analyst analyst=userRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("user not found of this id :"+" "+id));
+        if(updatedUser.getName()!= null){
+            analyst.setName(updatedUser.getName());
+        }if(updatedUser.getEmail()!=null){
+            analyst.setEmail(updatedUser.getEmail());
+        }if(updatedUser.getRole()!=null){
+            analyst.setRole(updatedUser.getRole());
+        }if(updatedUser.getPhone_no()!=null){
+            analyst.setPhone_no(updatedUser.getPhone_no());
+        }if(updatedUser.getPassword()!=null){
+            analyst.setPassword(updatedUser.getPassword());
+        }
+        //save
+        userRepository.save(analyst);
+        APIResponse<Analyst> apiResponse = new APIResponse<>(HttpStatus.CREATED.value(), "User data updated successfully of this id"+""+id, analyst);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
 

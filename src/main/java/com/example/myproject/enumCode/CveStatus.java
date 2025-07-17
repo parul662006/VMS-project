@@ -1,7 +1,7 @@
 package com.example.myproject.enumCode;
 
 public class CveStatus {
-    public enum cve_status{
+    public enum cveStatus{
         ACTIVE,
         INACTIVE
     }

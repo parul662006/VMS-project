@@ -24,40 +24,37 @@ public class Cve {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "cve_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String cveId;
 
     @Enumerated(EnumType.STRING)
-    private CveStatus.cve_status status;
+    private CveStatus.cveStatus status;
 
     @NotBlank(message = "cve_Data is required")
-    private String cve_data;
+    private String cveData;
 
     @Enumerated(EnumType.STRING)
     private SeverityLevel.Severity_level severity;
 
     @NotBlank(message = "package is required")
-    private String cve_package;
+    private String cvePackage;
 
 
     @Convert(converter= VersionConverter.class)
     @Column(columnDefinition = "JSON", nullable = false)
     private Versions versions;
 
+
+    @ManyToOne
+    @JsonBackReference
+    private Department department;
+
+
     @NotBlank(message = "Description is required")
-    private String cve_description;
+    private String cveDescription;
 
     @CreationTimestamp
     private LocalDateTime created_at;
-
-    public String getCve_id() {
-        return cveId;
-    }
-
-    public void setCve_id(String cve_id) {
-        this.cveId = cve_id;
-    }
-
 
     public int getId() {
         return id;
@@ -67,20 +64,28 @@ public class Cve {
         this.id = id;
     }
 
-    public CveStatus.cve_status getStatus() {
+    public String getCveId() {
+        return cveId;
+    }
+
+    public void setCveId(String cveId) {
+        this.cveId = cveId;
+    }
+
+    public CveStatus.cveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CveStatus.cve_status status) {
+    public void setStatus(CveStatus.cveStatus status) {
         this.status = status;
     }
 
-    public String getCve_data() {
-        return cve_data;
+    public String getCveData() {
+        return cveData;
     }
 
-    public void setCve_data(String cve_data) {
-        this.cve_data = cve_data;
+    public void setCveData(String cveData) {
+        this.cveData = cveData;
     }
 
     public SeverityLevel.Severity_level getSeverity() {
@@ -91,12 +96,12 @@ public class Cve {
         this.severity = severity;
     }
 
-    public String getCve_package() {
-        return cve_package;
+    public String getCvePackage() {
+        return cvePackage;
     }
 
-    public void setCve_package(String cve_package) {
-        this.cve_package = cve_package;
+    public void setCvePackage(String cvePackage) {
+        this.cvePackage = cvePackage;
     }
 
     public Versions getVersions() {
@@ -107,12 +112,20 @@ public class Cve {
         this.versions = versions;
     }
 
-    public String getCve_description() {
-        return cve_description;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setCve_description(String cve_description) {
-        this.cve_description = cve_description;
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public String getCveDescription() {
+        return cveDescription;
+    }
+
+    public void setCveDescription(String cveDescription) {
+        this.cveDescription = cveDescription;
     }
 
     public LocalDateTime getCreated_at() {

@@ -21,6 +21,9 @@ public class Analyst {
     @Enumerated(EnumType.STRING)
     private EnumProgram.Role role;
 
+    private Boolean verified=false;
+
+
     @CreationTimestamp
     @Column(name = "created_at") //updatable=false so that it won't change after update
     LocalDateTime created_at;
@@ -79,5 +82,13 @@ public class Analyst {
 
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
 }

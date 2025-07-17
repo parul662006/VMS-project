@@ -8,7 +8,9 @@ import com.example.myproject.globalException.EmailAlreadyExistsException;
 import com.example.myproject.globalException.UserNotFoundException;
 import com.example.myproject.model.*;
 import com.example.myproject.repository.UserRepository;
+import com.example.myproject.repository.VerificationTokenRepository;
 import com.example.myproject.service.UserService;
+import com.example.myproject.utility.TokenUtilProgram;
 import com.example.myproject.utility.UtilProgram;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserImplementation implements UserService {
@@ -25,6 +28,12 @@ public class UserImplementation implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    private TokenUtilProgram tokenUtilProgram;
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto){
@@ -44,6 +53,19 @@ public class UserImplementation implements UserService {
 
         //save user in db
         Analyst saveUser=userRepository.save(analyst);
+
+
+        VerificationToken verificationToken = new VerificationToken();
+        String t=tokenUtilProgram.generateToken();
+        verificationToken.setToken(t);
+        verificationToken.setAnalyst(saveUser);
+        verificationToken.setExpiryDate(2);
+
+        verificationTokenRepository.save(verificationToken);
+
+        //send email
+        tokenUtilProgram.sendVerificationEmail(saveUser.getEmail(),t);
+
 
         //convert entity -> response dto
         return modelMapper.map(saveUser, UserResponseDto.class);
