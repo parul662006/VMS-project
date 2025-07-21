@@ -16,7 +16,7 @@ public class VerificationToken {
     private Analyst analyst;
     private LocalDateTime expiryDate;
     public void setExpiryDate(int day) {
-        this.expiryDate = LocalDateTime.now().plusDays(day);
+        this.expiryDate = LocalDateTime.now().plusMinutes(10);
     }
 
 

@@ -8,6 +8,7 @@ import com.example.myproject.model.Analyst;
 import com.example.myproject.repository.UserRepository;
 import com.example.myproject.response.APIResponse;
 import com.example.myproject.service.UserService;
+import com.example.myproject.utility.TokenUtilProgram;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class AnalystController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenUtilProgram tokenUtilProgram;
 
 
 
@@ -107,6 +110,13 @@ public class AnalystController {
         userRepository.save(analyst);
         APIResponse<Analyst> apiResponse = new APIResponse<>(HttpStatus.CREATED.value(), "User data updated successfully of this id"+""+id, analyst);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
+
+    //email
+    @GetMapping("/api/auth/verify")
+    public ResponseEntity<String> verifiyEmail(@RequestParam String token){
+        String result=tokenUtilProgram.verifyEmailByToken(token);
+        return ResponseEntity.ok(result);
     }
 
 
