@@ -17,6 +17,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI(){
         return new OpenAPI()
         .info(new Info()
+                //swagger
                 .title("VMS Project API Documentation")
                 .description("This is the API documentation for Vulnerability Management System.\n\n"
                 +"GitHub Repository: [https://github.com/parul662006/VMS-project/tree/dev](https://github.com/parul662006/VMS-project/tree/dev)"
