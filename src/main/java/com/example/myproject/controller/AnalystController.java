@@ -9,6 +9,7 @@ import com.example.myproject.repository.UserRepository;
 import com.example.myproject.response.APIResponse;
 import com.example.myproject.service.UserService;
 import com.example.myproject.utility.TokenUtilProgram;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "User APIs", description = "Operations related to User data")
 @RestController
+@RequestMapping("/api/auth")
 public class AnalystController {
     @Autowired
     private UserService userService;
@@ -113,7 +115,7 @@ public class AnalystController {
     }
 
     //email
-    @GetMapping("/api/auth/verify")
+    @GetMapping("/verify")
     public ResponseEntity<String> verifiyEmail(@RequestParam String token){
         String result=tokenUtilProgram.verifyEmailByToken(token);
         return ResponseEntity.ok(result);

@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @Table(name="cve_info")
 @Getter
 @Setter
+
 public class Cve {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

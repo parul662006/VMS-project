@@ -8,6 +8,7 @@ import com.example.myproject.model.Cve;
 import com.example.myproject.repository.cve.CveRepository;
 import com.example.myproject.response.APIResponse;
 import com.example.myproject.service.CveService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@Tag(name = "CVE APIs", description = "Operations related to CVE data")
 @RestController
 public class CveController {
     @Autowired

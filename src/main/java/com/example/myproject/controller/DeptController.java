@@ -5,13 +5,14 @@ import com.example.myproject.model.Department;
 import com.example.myproject.repository.DepartmentRepository;
 import com.example.myproject.response.APIResponse;
 import com.example.myproject.service.DeptService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Department APIs", description = "Operations related to Department data")
 @RestController
 @RequestMapping("/department")
 public class DeptController {
