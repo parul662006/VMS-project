@@ -1,12 +1,5 @@
 package com.example.myproject.response;
-
-import com.example.myproject.enumCode.CveStatus;
-import com.example.myproject.model.Cve;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 
 @Data

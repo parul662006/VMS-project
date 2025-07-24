@@ -3,7 +3,6 @@ package com.example.myproject.service;
 import com.example.myproject.dto.LoginResponseDto;
 import com.example.myproject.dto.UserRequestDto;
 import com.example.myproject.dto.UserResponseDto;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

@@ -3,7 +3,6 @@ package com.example.myproject.controller;
 import com.example.myproject.dto.CveRequestDto;
 import com.example.myproject.dto.CveResponseDto;
 import com.example.myproject.enumCode.CveStatus;
-import com.example.myproject.model.Analyst;
 import com.example.myproject.model.Cve;
 import com.example.myproject.repository.cve.CveRepository;
 import com.example.myproject.response.APIResponse;
@@ -88,8 +87,6 @@ public class CveController {
         APIResponse<String> ap=new APIResponse<>(
                 HttpStatus.OK.value(),"data deleted successfully of this id:",null);
         return new ResponseEntity<>(ap,HttpStatus.OK);
-
-//        return ResponseEntity.ok("data deleted successfully of id : "+id);
     }
 
     //delete all
