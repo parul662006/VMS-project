@@ -87,8 +87,6 @@ public class CveController {
         APIResponse<String> ap=new APIResponse<>(
                 HttpStatus.OK.value(),"data deleted successfully of this id:",null);
         return new ResponseEntity<>(ap,HttpStatus.OK);
-
-//        return ResponseEntity.ok("data deleted successfully of id : "+id);
     }
 
     //delete all

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 
 public class Cve {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(unique = true, nullable = false)
@@ -38,7 +38,7 @@ public class Cve {
     private String cvePackage;
 
 
-    @Convert(converter= VersionConverter.class)
+    @Convert(converter = VersionConverter.class)
     @Column(columnDefinition = "JSON", nullable = false)
     private Versions versions;
 
@@ -54,83 +54,4 @@ public class Cve {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCveId() {
-        return cveId;
-    }
-
-    public void setCveId(String cveId) {
-        this.cveId = cveId;
-    }
-
-    public CveStatus.cveStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CveStatus.cveStatus status) {
-        this.status = status;
-    }
-
-    public String getCveData() {
-        return cveData;
-    }
-
-    public void setCveData(String cveData) {
-        this.cveData = cveData;
-    }
-
-    public SeverityLevel.Severity_level getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(SeverityLevel.Severity_level severity) {
-        this.severity = severity;
-    }
-
-    public String getCvePackage() {
-        return cvePackage;
-    }
-
-    public void setCvePackage(String cvePackage) {
-        this.cvePackage = cvePackage;
-    }
-
-    public Versions getVersions() {
-        return versions;
-    }
-
-    public void setVersions(Versions versions) {
-        this.versions = versions;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public String getCveDescription() {
-        return cveDescription;
-    }
-
-    public void setCveDescription(String cveDescription) {
-        this.cveDescription = cveDescription;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
 }

@@ -17,49 +17,8 @@ public class CveRequestDto {
     @NotBlank(message = "role is required")
     private String role;
 
-    //ddepartment id
+    //department id
     private Integer  deptId;
-
-
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getCveData() {
-        return cveData;
-    }
-
-    public void setCveData(String cveData) {
-        this.cveData = cveData;
-    }
-
-    public String getCvePackage() {
-        return cvePackage;
-    }
-
-    public void setCvePackage(String cvePackage) {
-        this.cvePackage = cvePackage;
-    }
-
-    public Versions getVersions() {
-        return versions;
-    }
-
-    public void setVersions(Versions versions) {
-        this.versions = versions;
-    }
-
-    public String getCveDescription() {
-        return cveDescription;
-    }
-
-    public void setCveDescription(String cveDescription) {
-        this.cveDescription = cveDescription;
-    }
-
 
 }
 
