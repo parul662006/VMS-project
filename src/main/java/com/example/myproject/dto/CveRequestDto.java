@@ -4,12 +4,7 @@ package com.example.myproject.dto;
 import com.example.myproject.model.Versions;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 @Data
-@Getter
-@Setter
 public class CveRequestDto {
     @NotBlank(message = "cve_data is required")
     private String cveData;

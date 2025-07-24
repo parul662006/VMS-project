@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        body {
+          font-family: Arial;
+          padding: 20px;
+        }
+        form {
+          max-width: 400px;
+          margin: auto;
+          border: 1px solid black;
+          padding: 20px;
+          border-radius: 8px;
+        }
+        input, button {
+          width: 100%;
+          padding: 10px;
+          margin-top: 10px;
+        }
+        h2 {
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h2>User Registration</h2>
+<form action="/api/auth/post-user-data" method="post">
+    <label>Full Name:</label>
+    <input type="text" name="fullname" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Password:</label>
+    <input type="password" name="password" required>
+
+    <label>Confirm Password:</label>
+    <input type="password" name="confirmPassword" required>
+
+    <label>Phone Number:</label>
+    <input type="tel" name="phone" pattern="[0-9]{10}" required placeholder="10-digit phone number">
+
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>

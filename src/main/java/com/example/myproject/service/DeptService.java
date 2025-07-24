@@ -1,6 +1,6 @@
 package com.example.myproject.service;
 
-import com.example.myproject.dto.CveRequestDto;
+
 import com.example.myproject.model.Department;
 
 import java.util.List;

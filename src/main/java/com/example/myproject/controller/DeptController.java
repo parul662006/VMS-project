@@ -1,6 +1,6 @@
 package com.example.myproject.controller;
 
-import com.example.myproject.model.Cve;
+
 import com.example.myproject.model.Department;
 import com.example.myproject.repository.DepartmentRepository;
 import com.example.myproject.response.APIResponse;
