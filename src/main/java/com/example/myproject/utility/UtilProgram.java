@@ -1,18 +1,17 @@
 package com.example.myproject.utility;
 
-import com.example.myproject.globalException.InvalidCredentialsException;
-import com.example.myproject.globalException.InvalidPasswordException;
+import com.example.myproject.globalException.MyCustomException;
 
 public class UtilProgram {
     public static void checkPassword(String password,String actualPassword){
         if(!password.equals(actualPassword)){
-            throw new InvalidCredentialsException("Password incorrect");
+            throw new MyCustomException.InvalidCredentialsException("Password incorrect");
         }
     }
 
     public static void matchPassword(String password,String confirmPassword) {
         if (!password.equals(confirmPassword)) {
-            throw new InvalidPasswordException("password doesn't match");
+            throw new MyCustomException.InvalidPasswordException("password doesn't match");
         }
     }
 

@@ -33,4 +33,5 @@ public interface CveService {
     List<Cve> getCveByStatus(CveStatus.cveStatus status);
 
 
+    List<Cve> search(String cveId, String versions, String cvePackage, String status);
 }

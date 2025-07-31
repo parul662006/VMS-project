@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -27,23 +27,35 @@
 </head>
 <body>
 <h2>User Registration</h2>
-<form action="/api/auth/post-user-data" method="post">
+<div th:if="${errorMessage}">
+    <script th:inline="javascript">
+        alert([[${errorMessage}]]);
+    </script>
+</div>
+
+<div th:if="${successMessage}">
+    <script th:inline="javascript">
+        alert([[${successMessage}]]);
+    </script>
+</div>
+<form th:action="@{/register-user}" th:object="${analyst}" method="post">
     <label>Full Name:</label>
-    <input type="text" name="fullname" required>
+    <input type="text" th:field="*{name}" required>
 
     <label>Email:</label>
-    <input type="email" name="email" required>
+    <input type="email" th:field="*{email}" required>
 
     <label>Password:</label>
-    <input type="password" name="password" required>
+    <input type="password" th:field="*{password}" required>
 
     <label>Confirm Password:</label>
     <input type="password" name="confirmPassword" required>
 
     <label>Phone Number:</label>
-    <input type="tel" name="phone" pattern="[0-9]{10}" required placeholder="10-digit phone number">
+    <input type="tel" th:field="*{phone_no}" pattern="[0-9]{10}" required placeholder="10-digit phone number">
 
     <button type="submit">Register</button>
 </form>
+
 </body>
 </html>

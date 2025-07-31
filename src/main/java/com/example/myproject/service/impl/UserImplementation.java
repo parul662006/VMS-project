@@ -4,8 +4,8 @@ import com.example.myproject.dto.LoginResponseDto;
 import com.example.myproject.dto.UserRequestDto;
 import com.example.myproject.dto.UserResponseDto;
 import com.example.myproject.enumCode.EnumProgram;
-import com.example.myproject.globalException.EmailAlreadyExistsException;
-import com.example.myproject.globalException.UserNotFoundException;
+
+import com.example.myproject.globalException.MyCustomException;
 import com.example.myproject.model.*;
 import com.example.myproject.repository.UserRepository;
 import com.example.myproject.repository.VerificationTokenRepository;
@@ -41,7 +41,7 @@ public class UserImplementation implements UserService {
         //REGISTER FOR USER ONLY
         // Step 1: Check if email already exists
         if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
-            throw new EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
+            throw new MyCustomException.EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
         }
 
         //convert dto -> entity
@@ -64,6 +64,7 @@ public class UserImplementation implements UserService {
         verificationTokenRepository.save(verificationToken);
 
         //send email
+        System.out.println("📨 Calling sendVerificationEmail() with: " + saveUser.getEmail() + " and token: " + t);
         tokenUtilProgram.sendVerificationEmail(saveUser.getEmail(),t);
 
 
@@ -85,7 +86,7 @@ public class UserImplementation implements UserService {
     @Override
     public LoginResponseDto loginUser(String email, String password){
         Analyst analyst=userRepository.findByEmail(email)
-                .orElseThrow(()->new UserNotFoundException("user not found with this email :"+email));
+                .orElseThrow(()->new MyCustomException.UserNotFoundException("user not found with this email :"+email));
 
         //check password
         UtilProgram.checkPassword(password,analyst.getPassword());
@@ -109,7 +110,7 @@ public class UserImplementation implements UserService {
         // Step 1: Check if email already exists
         String email = userRequestDto.getEmail().toLowerCase();//converting email in lower case
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
+            throw new MyCustomException.EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
         }
 
         //  Set lowercase email back to DTO

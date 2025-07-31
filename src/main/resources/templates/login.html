@@ -77,7 +77,7 @@
         </script>
     </div>
 
-    <form th:action="@{/post-data}" th:object="${analyst.name}" method="post">
+    <form th:action="@{/post-data}" th:object="${analyst}" method="post">
         <label for="email">Email:</label>
         <input type="email" th:field="*{email}" id="email" required />
 
