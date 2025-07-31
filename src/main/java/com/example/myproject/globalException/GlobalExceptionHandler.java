@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,26 +26,26 @@ public class GlobalExceptionHandler {
         }
 
         //UserNotFoundException global handler
-        @ExceptionHandler(UserNotFoundException.class)
-         public ResponseEntity<String> userNotFound(UserNotFoundException ex){
+        @ExceptionHandler(MyCustomException.UserNotFoundException.class)
+         public ResponseEntity<String> userNotFound(MyCustomException.UserNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This user not found");
         }
 
         //InvalidCredentialsException global handler
-        @ExceptionHandler(InvalidCredentialsException.class)
-        public ResponseEntity<String> invalidCredentials(InvalidCredentialsException ex){
+        @ExceptionHandler(MyCustomException.InvalidCredentialsException.class)
+        public ResponseEntity<String> invalidCredentials(MyCustomException.InvalidCredentialsException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your credentials are invalid");
         }
 
         //InvalidPasswordException global handler
-        @ExceptionHandler(InvalidPasswordException.class)
-        public ResponseEntity<String> invalidCredentials(InvalidPasswordException ex){
+        @ExceptionHandler(MyCustomException.InvalidPasswordException.class)
+        public ResponseEntity<String> invalidCredentials(MyCustomException.InvalidPasswordException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("your password doesn't match please try again !!");
         }
 
         // EmailAlreadyExistsExceptionglobal handler
-        @ExceptionHandler(EmailAlreadyExistsException.class)
-        public ResponseEntity<String> invalidEmailCredentials( EmailAlreadyExistsException ex){
+        @ExceptionHandler(MyCustomException.EmailAlreadyExistsException.class)
+        public ResponseEntity<String> invalidEmailCredentials( MyCustomException.EmailAlreadyExistsException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email is already exists in your database !!");
         }
 

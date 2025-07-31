@@ -2,11 +2,8 @@ package com.example.myproject.service;
 
 import com.example.myproject.dto.CveRequestDto;
 import com.example.myproject.dto.CveResponseDto;
-import com.example.myproject.dto.UserRequestDto;
 import com.example.myproject.enumCode.CveStatus;
-import com.example.myproject.model.Analyst;
 import com.example.myproject.model.Cve;
-import com.example.myproject.model.Department;
 
 import java.util.List;
 
@@ -36,4 +33,5 @@ public interface CveService {
     List<Cve> getCveByStatus(CveStatus.cveStatus status);
 
 
+    List<Cve> search(String cveId, String versions, String cvePackage, String status);
 }

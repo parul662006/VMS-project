@@ -9,6 +9,9 @@ import com.example.myproject.repository.UserRepository;
 import com.example.myproject.response.APIResponse;
 import com.example.myproject.service.UserService;
 import com.example.myproject.utility.TokenUtilProgram;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -37,6 +40,16 @@ public class AnalystController {
 
 
     // post user data
+    @Operation(
+            summary = "Register a new user",
+            description = "Creates a new user and sends a verification token (valid for 10 minutes) to the provided email."
+    )
+
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Data uploaded successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
     @PostMapping("/post-user-data")
     public ResponseEntity<?> postData(@Valid @RequestBody UserRequestDto userDto){
         UserResponseDto dto=userService.createUser(userDto);
@@ -47,6 +60,16 @@ public class AnalystController {
 
 
     //  Get user by ID
+    @Operation(
+            summary = "Get user by ID",
+            description = "Get user by its ID"
+    )
+
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "user data fetched successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable int id) {
         UserResponseDto user = userService.getUserById(id);
@@ -55,6 +78,15 @@ public class AnalystController {
 
 
     //POST ADMIN DATA
+    @Operation(
+            summary = "Register a new admin",
+            description = "Registers a new admin user in the system"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Admin data uploaded successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping("/post-admin-data")
     public ResponseEntity<?> postAdminData(@Valid @RequestBody UserRequestDto userDto){
         UserResponseDto dto= userService.registerAdmin(userDto);
@@ -64,6 +96,15 @@ public class AnalystController {
     }
 
     //login Admin and user
+    @Operation(
+            summary = "Login admin or user",
+            description = "Login as admin or user using email and password"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful"),
+            @ApiResponse(responseCode = "400", description = "Invalid credentials"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping("/login-page")
     public ResponseEntity<APIResponse<LoginResponseDto>> adminData(@Valid @RequestBody LoginRequestDto dto){
         LoginResponseDto loginResponseDto= userService.loginUser(dto.getEmail(), dto.getPassword());
@@ -73,6 +114,15 @@ public class AnalystController {
     }
 
     // delete users by their id
+    @Operation(
+            summary = "Delete user by ID",
+            description = "Deletes a user by their unique ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("delete-data-by-id/{id}")
     public ResponseEntity<String> deleteData(@PathVariable int id){
         userService.deleteDataById(id);
@@ -80,6 +130,14 @@ public class AnalystController {
     }
 
     //Delete all
+    @Operation(
+            summary = "Delete all users",
+            description = "Deletes all users from the system"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All user data deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("delete-all-user-data")
     public ResponseEntity<String> deleteAll(UserRequestDto userRequestDto){
         userService.deleteAllData(userRequestDto);
@@ -87,12 +145,29 @@ public class AnalystController {
     }
 
     // get all
+    @Operation(
+            summary = "Get all users",
+            description = "Fetches all registered users' data"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users fetched successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("get-All-users-data")
     public ResponseEntity<List<LoginResponseDto>> getAllData(){
         return ResponseEntity.ok(userService.getAllData());
     }
 
     //data update by patch
+    @Operation(
+            summary = "Partially update user by ID",
+            description = "Updates specific fields of a user by ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PatchMapping("user/update/{id}")
     public ResponseEntity<APIResponse<Analyst>> updateUserDataPartially(@PathVariable int id,@RequestBody Analyst updatedUser){
         Analyst analyst=userRepository.findById(id)
@@ -115,6 +190,15 @@ public class AnalystController {
     }
 
     //email
+    @Operation(
+            summary = "Verify email with token",
+            description = "Verifies email using a token sent via email"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Email verified successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid or expired token"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/verify")
     public ResponseEntity<String> verifiyEmail(@RequestParam String token){
         String result=tokenUtilProgram.verifyEmailByToken(token);

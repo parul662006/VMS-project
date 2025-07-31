@@ -7,20 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
-
 
 public interface CveRepository extends JpaRepository<Cve,Integer> {
 
     //custom query to get version
-    @Query(value="SELECT * FROM cve_info"+
-            " WHERE JSON_UNQUOTE(JSON_EXTRACT(versions, '$.cve_version_start')) <= :version "+"AND JSON_UNQUOTE(JSON_EXTRACT(versions, '$.cve_version_end')) >= :version", nativeQuery = true
+    @Query(value = "SELECT * FROM cve_info" +
+            " WHERE JSON_UNQUOTE(JSON_EXTRACT(versions, '$.cve_version_start')) <= :version " + "AND JSON_UNQUOTE(JSON_EXTRACT(versions, '$.cve_version_end')) >= :version", nativeQuery = true
     )
     List<Cve> getVersionCustom(@Param("version") String version);
 
 
     //get by cve package
     List<Cve> findByCvePackage(String cvePackage);
+
     //get by cve package and status=active
     List<Cve> findByCvePackageAndStatus(String cvePackage, CveStatus.cveStatus status);
 
@@ -29,4 +28,14 @@ public interface CveRepository extends JpaRepository<Cve,Integer> {
 
     //get cve by status
     List<Cve> findByStatus(CveStatus.cveStatus status);
+
+    @Query(value = "SELECT * FROM cve_info c " +
+            "WHERE (:cveId IS NULL OR :cveId = '' OR c.cve_id LIKE %:cveId%) " +
+            "AND (:version IS NULL OR :version = '' OR c.versions LIKE %:version%) " +
+            "AND (:cvePackage IS NULL OR :cvePackage = '' OR c.cve_package LIKE %:cvePackage%) " +
+            "AND (:status IS NULL OR :status = '' OR c.status = :status)", nativeQuery = true)
+    List<Cve> search(@Param("cveId") String cveId,
+                     @Param("version") String version,
+                     @Param("cvePackage") String cvePackage,
+                     @Param("status") String status);
 }

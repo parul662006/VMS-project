@@ -118,5 +118,9 @@ public class CveImplementation implements CveService {
         return cveRepository.findByStatus(status);
     }
 
+    @Override
+    public List<Cve> search(String cveId, String versions, String cvePackage, String status) {
+        return cveRepository.search(cveId, versions, cvePackage, status);
+    }
 
 }
