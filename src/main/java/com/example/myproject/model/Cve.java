@@ -2,6 +2,7 @@ package com.example.myproject.model;
 
 import com.example.myproject.converter.VersionConverter;
 import com.example.myproject.enumCode.CveStatus;
+import com.example.myproject.enumCode.EnumProgram;
 import com.example.myproject.enumCode.SeverityLevel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -42,6 +43,9 @@ public class Cve {
     @Column(columnDefinition = "JSON", nullable = false)
     private Versions versions;
 
+    @Enumerated(EnumType.STRING)
+    private EnumProgram.Role role;
+
 
     @ManyToOne
     @JsonBackReference
@@ -54,4 +58,11 @@ public class Cve {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    public EnumProgram.Role getRole() {
+        return role;
+    }
+
+    public void setRole(EnumProgram.Role role) {
+        this.role = role;
+    }
 }

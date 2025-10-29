@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Registration</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .register-card {
+            background: #fff;
+            padding: 40px 35px;
+            border-radius: 20px;
+            width: 400px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .register-card h2 {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .register-card input {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .register-card input:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 5px rgba(37,117,252,0.5);
+            outline: none;
+        }
+
+        .register-card button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .register-card button:hover {
+            background: linear-gradient(90deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+        }
+
+        .message {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .message.success { color: green; }
+        .message.error { color: red; }
+    </style>
+</head>
+<body>
+
+<div class="register-card">
+    <h2>Admin Registration</h2>
+
+    <!-- Display success or error messages from backend -->
+    <div th:if="${errorMessage}">
+        <script th:inline="javascript">
+            alert([[${errorMessage}]]);
+        </script>
+    </div>
+    <form th:action="@{/admin/register-admin}" th:object="${admin}" method="post">
+
+        <!-- Full Name -->
+        <input type="text" th:field="*{name}" placeholder="Full Name" required />
+
+        <!-- Email -->
+        <input type="email" th:field="*{email}" placeholder="Email" required />
+
+        <!-- Password -->
+        <!-- HTML5 pattern ensures 8+ characters, at least 1 digit and 1 special char -->
+        <input type="password" th:field="*{password}"
+               placeholder="Password"
+               pattern="(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}"
+               title="At least 8 characters, 1 digit, 1 special character"
+               required />
+
+        <!-- Confirm Password -->
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+
+        <!-- Phone Number -->
+        <input type="text" th:field="*{phone_no}" placeholder="Phone Number" required />
+
+        <!-- Hidden role -->
+        <input type="hidden" th:field="*{role}" value="ADMIN" />
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>

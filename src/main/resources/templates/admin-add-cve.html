@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add CVE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center px-4">
+
+<div class="bg-white shadow-2xl rounded-2xl w-full max-w-lg p-8 transform transition-all duration-300 hover:scale-[1.02]">
+    <h1 class="text-3xl font-extrabold text-center mb-6 text-indigo-700 tracking-wide">
+        🚀 Add CVE Data
+    </h1>
+
+    <!-- Error / Success Messages -->
+    <div th:if="${error}" class="text-red-600 font-medium text-center mb-3">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${failed}">
+        <script th:inline="javascript">
+            alert([[${failed}]]);
+        </script>
+    </div>
+    <div th:if="${success}">
+        <script th:inline="javascript">
+            alert([[${success}]]);
+        </script>
+    </div>
+
+    <form th:action="@{/admin/add-cve}" th:object="${cve}" method="post" class="space-y-5">
+
+        <!-- CVE Data -->
+        <div>
+            <label class="block text-sm font-semibold text-gray-700">CVE Data</label>
+            <input type="text" th:field="*{cveData}"
+                   class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" />
+        </div>
+
+        <!-- CVE Package -->
+        <div>
+            <label class="block text-sm font-semibold text-gray-700">CVE Package</label>
+            <input type="text" th:field="*{cvePackage}"
+                   class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" />
+        </div>
+
+        <!-- Versions -->
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700">Start Version</label>
+                <input type="text" th:field="*{versions.cve_version_start}" id="cve_version_start"
+                       class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" />
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700">End Version</label>
+                <input type="text" th:field="*{versions.cve_version_end}" id="cve_version_end"
+                       class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" />
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+            <label class="block text-sm font-semibold text-gray-700">Description</label>
+            <textarea th:field="*{cveDescription}" rows="3"
+                      class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"></textarea>
+        </div>
+
+        <!-- Role -->
+        <div>
+            <label for="role" class="block text-sm font-semibold text-gray-700">Role</label>
+            <select id="role" th:field="*{role}" required
+                    class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                <option value="" disabled selected>Select Role</option>
+                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+            </select>
+        </div>
+
+        <!-- Department ID -->
+        <div>
+            <label class="block text-sm font-semibold text-gray-700">Department ID</label>
+            <input type="number" th:field="*{deptId}"
+                   class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" />
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 rounded-xl shadow-md hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+            ✅ Submit CVE
+        </button>
+
+    </form>
+</div>
+
+</body>
+</html>

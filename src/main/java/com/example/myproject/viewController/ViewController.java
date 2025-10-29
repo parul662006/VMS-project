@@ -109,7 +109,5 @@ public class ViewController {
         model.addAttribute("cveList", cveList);
         return "dashboard";
     }
-
-
 }
 

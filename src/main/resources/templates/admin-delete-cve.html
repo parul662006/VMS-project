@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete CVE</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #dc3545;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .card {
+            background-color: #ffffff;
+            display: inline-block;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        input[type="number"] {
+            margin: 10px 0 20px 0;
+            padding: 12px;
+            width: 280px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        input[type="number"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.4);
+        }
+        button {
+            padding: 12px 20px;
+            width: 280px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        button.delete-id {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+        button.delete-id:hover {
+            background: linear-gradient(135deg, #c82333, #a71d2a);
+        }
+        button.delete-all {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            margin-top: 20px;
+        }
+        button.delete-all:hover {
+            background: linear-gradient(135deg, #495057, #343a40);
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<h1>Delete CVE</h1>
+
+<!-- Success/Error Alerts -->
+<div th:if="${success}">
+    <script th:inline="javascript">
+        alert([[${success}]]);
+    </script>
+</div>
+<div th:if="${error}">
+    <script th:inline="javascript">
+        alert([[${error}]]);
+    </script>
+</div>
+
+<div class="card">
+    <!-- Delete by ID -->
+    <form th:action="@{/admin/delete-cve}" method="post">
+        <label>Enter CVE ID to Delete:</label>
+        <input type="number" name="id" placeholder="Enter CVE ID" required>
+        <button type="submit" class="delete-id">Delete CVE by ID</button>
+    </form>
+
+    <!-- Success/Error Alerts (secondary messages) -->
+    <div th:if="${successMsg}">
+        <script th:inline="javascript">
+            alert([[${successMsg}]]);
+        </script>
+    </div>
+    <div th:if="${errorMsg}">
+        <script th:inline="javascript">
+            alert([[${errorMsg}]]);
+        </script>
+    </div>
+
+    <!-- Delete All -->
+    <form th:action="@{/admin/delete-all}" method="post">
+        <button type="submit" class="delete-all">Delete All CVEs</button>
+    </form>
+</div>
+
+<!-- Inline messages -->
+<div class="message success" th:if="${success}" th:text="${success}"></div>
+<div class="message error" th:if="${error}" th:text="${error}"></div>
+</body>
+</html>

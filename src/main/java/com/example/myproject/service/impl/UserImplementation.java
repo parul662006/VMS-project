@@ -74,6 +74,7 @@ public class UserImplementation implements UserService {
     }
 
 
+
     //for get user by id
     @Override
     public UserResponseDto getUserById(int id) {
@@ -124,6 +125,20 @@ public class UserImplementation implements UserService {
 
         //save user in db
         Analyst saveUser=userRepository.save(analyst);
+
+        //set token
+        VerificationToken verificationToken = new VerificationToken();
+        String t=tokenUtilProgram.generateToken();
+        verificationToken.setToken(t);
+        verificationToken.setAnalyst(saveUser);
+        verificationToken.setExpiryDate(2);
+
+        verificationTokenRepository.save(verificationToken);
+
+        //send email
+        System.out.println("📨 Calling sendVerificationEmail() with: " + saveUser.getEmail() + " and token: " + t);
+        tokenUtilProgram.sendVerificationEmail(saveUser.getEmail(),t);
+
 
         //convert entity -> response dto
         return modelMapper.map(saveUser, UserResponseDto.class);

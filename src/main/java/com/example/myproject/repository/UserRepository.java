@@ -1,5 +1,6 @@
 package com.example.myproject.repository;
 
+import com.example.myproject.enumCode.EnumProgram;
 import com.example.myproject.model.Analyst;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,6 +13,8 @@ public interface UserRepository extends JpaRepository<Analyst,Integer> {
 
 
     Optional<Analyst> findByEmailAndPassword(String email, String password);
+
+    Optional<Analyst> findByEmailAndPasswordAndRole(String email, String password, EnumProgram.Role role);
 }
 
 
