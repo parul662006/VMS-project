@@ -1,0 +1,171 @@
+package com.example.myproject.service.impl;
+
+import com.example.myproject.dto.LoginResponseDto;
+import com.example.myproject.dto.UserRequestDto;
+import com.example.myproject.dto.UserResponseDto;
+import com.example.myproject.enumCode.EnumProgram;
+
+import com.example.myproject.globalException.MyCustomException;
+import com.example.myproject.model.*;
+import com.example.myproject.repository.UserRepository;
+import com.example.myproject.repository.VerificationTokenRepository;
+import com.example.myproject.service.UserService;
+import com.example.myproject.utility.TokenUtilProgram;
+import com.example.myproject.utility.UtilProgram;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class UserImplementation implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    private TokenUtilProgram tokenUtilProgram;
+
+    @Override
+    public UserResponseDto createUser(UserRequestDto userRequestDto){
+
+        //REGISTER FOR USER ONLY
+        // Step 1: Check if email already exists
+        if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
+            throw new MyCustomException.EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
+        }
+
+        //convert dto -> entity
+        Analyst analyst=modelMapper.map(userRequestDto, Analyst.class);
+        UtilProgram.matchPassword(userRequestDto.getPassword(),userRequestDto.getConfirm_password());
+
+        //set role
+        analyst.setRole(EnumProgram.Role.USER);
+
+        //save user in db
+        Analyst saveUser=userRepository.save(analyst);
+
+
+        VerificationToken verificationToken = new VerificationToken();
+        String t=tokenUtilProgram.generateToken();
+        verificationToken.setToken(t);
+        verificationToken.setAnalyst(saveUser);
+        verificationToken.setExpiryDate(2);
+
+        verificationTokenRepository.save(verificationToken);
+
+        //send email
+        System.out.println("📨 Calling sendVerificationEmail() with: " + saveUser.getEmail() + " and token: " + t);
+        tokenUtilProgram.sendVerificationEmail(saveUser.getEmail(),t);
+
+
+        //convert entity -> response dto
+        return modelMapper.map(saveUser, UserResponseDto.class);
+
+    }
+
+
+
+    //for get user by id
+    @Override
+    public UserResponseDto getUserById(int id) {
+        Analyst analyst = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found with this id :" + id));
+        return modelMapper.map(analyst, UserResponseDto.class);
+    }
+
+    //check login email and password entered by user
+    @Override
+    public LoginResponseDto loginUser(String email, String password){
+        Analyst analyst=userRepository.findByEmail(email)
+                .orElseThrow(()->new MyCustomException.UserNotFoundException("user not found with this email :"+email));
+
+        //check password
+        UtilProgram.checkPassword(password,analyst.getPassword());
+
+
+//        return to response dto
+        LoginResponseDto ll=  modelMapper.map(analyst, LoginResponseDto.class);
+
+        return ll;
+    }
+
+
+    //REGISTER ONLY FOR ADMINS HERE
+    @Override
+    public UserResponseDto registerAdmin(UserRequestDto userRequestDto){
+
+        //check password first before email
+        UtilProgram.matchPassword(userRequestDto.getPassword(),userRequestDto.getConfirm_password());
+
+
+        // Step 1: Check if email already exists
+        String email = userRequestDto.getEmail().toLowerCase();//converting email in lower case
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new MyCustomException.EmailAlreadyExistsException("Email already exists: " + userRequestDto.getEmail());
+        }
+
+        //  Set lowercase email back to DTO
+        userRequestDto.setEmail(email);
+
+        //convert dto -> entity
+        Analyst analyst=modelMapper.map(userRequestDto, Analyst.class);
+
+        //set role
+        analyst.setRole(EnumProgram.Role.ADMIN);
+
+        //save user in db
+        Analyst saveUser=userRepository.save(analyst);
+
+        //set token
+        VerificationToken verificationToken = new VerificationToken();
+        String t=tokenUtilProgram.generateToken();
+        verificationToken.setToken(t);
+        verificationToken.setAnalyst(saveUser);
+        verificationToken.setExpiryDate(2);
+
+        verificationTokenRepository.save(verificationToken);
+
+        //send email
+        System.out.println("📨 Calling sendVerificationEmail() with: " + saveUser.getEmail() + " and token: " + t);
+        tokenUtilProgram.sendVerificationEmail(saveUser.getEmail(),t);
+
+
+        //convert entity -> response dto
+        return modelMapper.map(saveUser, UserResponseDto.class);
+
+    }
+
+    @Override
+    public List<LoginResponseDto> getAllData(){
+        List<Analyst> analyst=userRepository.findAll();
+        List<LoginResponseDto> loginResponseDtoList=new ArrayList<>();
+        for(Analyst a:analyst){
+            LoginResponseDto loginResponseDto= modelMapper.map(a, LoginResponseDto.class);
+            loginResponseDtoList.add(loginResponseDto);
+        }
+        return loginResponseDtoList;
+    }
+
+    @Override
+    public void deleteDataById(int id){
+        Analyst analyst=userRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("data not found of id : "+id));
+        userRepository.delete(analyst);
+    }
+
+    @Override
+    public void deleteAllData(UserRequestDto userRequestDto){
+        List<Analyst> analyst=userRepository.findAll();
+        userRepository.deleteAll(analyst);
+    }
+}

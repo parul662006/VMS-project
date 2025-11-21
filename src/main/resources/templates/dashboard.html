@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            background-color: #111;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar span {
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 50px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 30px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .dashboard-content {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .dashboard-content h2 {
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .card {
+            background-color: white;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .card h3 {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .form-row input[type="text"],
+        .form-row select {
+            flex: 1 1 45%;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .no-results {
+            margin-top: 20px;
+            color: #888;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-row input,
+            .form-row select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <span>Dashboard</span>
+    <a th:href="@{/dashboard}">Home</a>
+    <a href="#">Profile</a>
+    <a href="#">Settings</a>
+    <a th:href="@{/logout}">Logout</a>
+</div>
+
+<div class="dashboard-content">
+    <h2>Welcome to the VMS-Dashboard!</h2>
+    <p>You are logged in successfully.</p>
+
+    <div class="card">
+        <h3>Search CVE Records</h3>
+        <form id="searchForm" th:action="@{/dashboard}" method="get">
+            <div class="form-row">
+                <input type="text" name="cveId" placeholder="Search by CVE ID" th:value="${param.cveId}" />
+                <input type="text" name="version" placeholder="Search by Version" th:value="${param.version}" />
+                <input type="text" name="cvePackage" placeholder="Search by package" th:value="${param.cvePackage}" />
+                <select name="status">
+                    <option value="">Select Status</option>
+                    <option value="ACTIVE" th:selected="${param.status == 'ACTIVE'}">ACTIVE</option>
+                    <option value="INACTIVE" th:selected="${param.status == 'INACTIVE'}">INACTIVE</option>
+                </select>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit">Search</button>
+                <button type="button" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <script>
+            function clearForm() {
+                document.getElementById("searchForm").reset(); // clear all fields
+                window.location.href = "/dashboard"; // redirect to clean URL (clears params)
+            }
+        </script>
+
+
+        <!-- Results Table -->
+        <!-- Show table only if cveList is not null and not empty -->
+        <div th:if="${cveList != null and !cveList.isEmpty()}">
+            <table>
+                <thead>
+                <tr>
+                    <th>CVE ID</th>
+                    <th>Package</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Versions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr  th:each="cve : ${cveList}">
+                    <td th:text="${cve.cveId}"></td>
+                    <td th:text="${cve.cvePackage}"></td>
+                    <td th:text="${cve.cveDescription}"></td>
+                    <td th:text="${cve.status}"></td>
+                    <td th:text="${cve.versions}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- If No Results -->
+        <div class="no-results" th:if="${cveList != null and #lists.isEmpty(cveList)}">
+            No matching records found.
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
